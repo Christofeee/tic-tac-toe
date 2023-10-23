@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-function BombGame()
+function TicTacToe()
 {
+    const [isGameWon, setIsGameWon] = useState(false);
+    
     let cells = new Array(3);   //1D array
     let isOturn = true
 
@@ -201,11 +203,13 @@ function BombGame()
         {
             cells[rowIndex][cellIndex] = "O"
             isOturn = false
+            document.getElementById("turn").innerHTML = ("'X' turn")
         }
         else
         {
             cells[rowIndex][cellIndex] = "X"
             isOturn = true
+            document.getElementById("turn").innerHTML = ("'O' turn")
         }
         changeEmoji(elementId, cells[rowIndex][cellIndex])
         document.getElementById(elementId).disabled = true
@@ -216,9 +220,11 @@ function BombGame()
         console.log("The winner is", winner)
         if (winner)
         {
-          document.getElementById("winner").innerHTML = ("The winner is '" + winner + "'")
-          setTimeout(hideShow, 1100,"gamecomplete")
-          setTimeout(hideShow, 1100,"fullscreen-bg")
+            // document.getElementsByTagName("button").disabled = true
+            setIsGameWon(true)
+            document.getElementById("winner").innerHTML = ("The winner is '" + winner + "'")
+            setTimeout(hideShow, 300,"gamecomplete")
+            setTimeout(hideShow, 300,"fullscreen-bg")
         }
     }
 
@@ -228,9 +234,9 @@ function BombGame()
                 <td>
                     <button
                         onClick={ () => clickEvent(cellIndex, rowIndex, cell)}
-                        class="cell" 
-                        id={generateId(rowIndex,cellIndex)}>
-                        
+                        className="cell" 
+                        id={generateId(rowIndex,cellIndex)}
+                        disabled={isGameWon}>
                     </button>
                 </td>
             )}
@@ -243,7 +249,7 @@ function BombGame()
             
             <table id="board">  
                 <tr><th colSpan={5}><h1 class="header">Tic-Tac-Toe</h1></th></tr>
-                <tr><th colSpan={5}><h1 style={{fontSize:"40px"}}>'O' turn</h1></th></tr>
+                <tr><th colSpan={5}><h1 id="turn" style={{fontSize:"40px"}}>'O' turn</h1></th></tr>
                 {board}
             </table>
             <div id="fullscreen-bg" style={{display:"none"}}></div> {/*darken background*/}
@@ -255,9 +261,8 @@ function BombGame()
                 <h1 id="winner"></h1>
                 <button onClick={restart} id="restartbtn">restart</button>
             </div>
-            
         </div>
     )
 }
 
-export default BombGame;
+export default TicTacToe;
